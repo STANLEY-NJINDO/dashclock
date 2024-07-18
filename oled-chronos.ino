@@ -1,3 +1,12 @@
+#include <Adafruit_SSD1306.h>
+#include <splash.h>
+
+#include <Adafruit_GFX.h>
+#include <Adafruit_GrayOLED.h>
+#include <Adafruit_SPITFT.h>
+#include <Adafruit_SPITFT_Macros.h>
+#include <gfxfont.h>
+
 #include <ChronosESP32.h>
 
 /*
@@ -27,7 +36,7 @@
 #include <OLED_I2C.h>
 #include <ChronosESP32.h>
 #include <WS2812FX.h>
-#include "graphics.h"
+#include <graphics.h>
 
 
 #define LED_COUNT 1
@@ -129,11 +138,11 @@ void setup()
   pinMode(BUTTON_PIN, INPUT_PULLUP);
   pinMode(BUILTINLED, OUTPUT);
 
-  if (!myOLED.begin(SSD1306_128X64))
-    while (1)
-      ; // In case the library failed to allocate enough RAM for the display buffer...
+myOLED.begin(SSD1306_128X32);
+   
+    // In case the library failed to allocate enough RAM for the display buffer...
 
-  myOLED.setFont(SmallFont);
+
 
   watch.setConfigurationCallback(configCallback);
   watch.setNotificationCallback(notificationCallback);
@@ -157,37 +166,9 @@ void loop()
  
 
 
-    int c = watch.getNotificationCount();
-    if (c == 0)
-    {
-      copyMsg("No notifications");
-    }
-    else
-    {
-      copyMsg(watch.getNotificationAt(msgIndex).message);
-    }
-
-    if (notify.active)
-    {
-      // notify.active = false;
-      ws2812fx.setBrightness(0);
-      notify.time = millis();
-      if (c == msgIndex)
-      {
-        notify.active = false;
-        msgIndex = 0;
-      }
-      else
-      {
-        msgIndex++;
-      }
-    }
-    else
-    {
-      notify.time = millis();
-      notify.active = true;
-    }
-    myOLED.clrScr();
+    
+    
+    watch.clearNotifications();
 
   digitalWrite(BUILTINLED, watch.isConnected());
 
@@ -231,6 +212,7 @@ void showNotification()
 
 void printLocalTime()
 {
+  watch.clearNotifications();
   myOLED.print(watch.getAmPmC(false), RIGHT, 10);
 
   myOLED.setFont(MediumNumbers);
@@ -241,14 +223,13 @@ void printLocalTime()
   myOLED.print(String(watch.getWeatherAt(0).temp) + "C", LEFT, 44);
   myOLED.print(watch.getWeatherCity(), LEFT, 54);
 
-  if (watch.isConnected())
-  {
+ 
     myOLED.drawBitmap(0, 15, bluetooth, 16, 16);
     myOLED.drawRect(110, 23, 127, 30);
     myOLED.drawRectFill(108, 25, 110, 28);
     myOLED.drawRectFill(map(watch.getPhoneBattery(), 0, 100, 127, 110), 23, 127, 30);
     myOLED.print(String(watch.getPhoneBattery()) + "%", RIGHT, 34);
-  }
+   myOLED.update();
 }
 
 void copyMsg(String ms)
