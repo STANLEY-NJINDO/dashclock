@@ -1,6 +1,6 @@
 Components:
 
--1.Esp32
++1.Esp32
 -2.0.91 inch oled display 
 -3.3.7V Li-ion battery 
 -4.3D printed case
