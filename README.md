@@ -1,9 +1,9 @@
 Components:
 
-1.Esp32
-2.0.91 inch oled display 
-3.3.7V Li-ion battery 
-4.3D printed case
+-1.Esp32
+-2.0.91 inch oled display 
+-3.3.7V Li-ion battery 
+-4.3D printed case
 
 This is an attempt to digitize my bicycle by creating a clock for the handle bar.....no more getting home past curfew hours
 special credits to @fbiego for help with intergrating the esp32 with his chronos bluetooth app
